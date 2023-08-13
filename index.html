@@ -1,0 +1,307 @@
+<html>
+	<head>
+		<script type="text/javascript" src="p5.min.js"></script>
+		<title>Primer Parcial - Salvador Citalan</title>
+		<style>
+			body{
+				font-family: 'Arial';
+			}
+			#main_calculadora{
+			    display: block;
+			    position: relative;
+			    width: 80%;
+			    min-height: 80%;
+			    margin: 10%;
+			    border: solid 1px #eee;
+			    border-radius: 4%;
+			    text-align: center;
+			    margin-top: 2%;
+			    background-color: rgb(238 238 238 / 63%);
+			}
+			#main_calculadora h1{
+				text-align: center;
+				font-family: 'Arial';
+				font-weight: 900;
+				font-size: 50px;
+				margin: 1% 0% 1% 0%;
+			}
+			#button_container{
+				display: block;
+				position: relative;
+				width: 96%;
+				margin: 2%;
+				text-align:center;
+			}
+			.button_calc {
+				width: 20%;
+			    height: 20%;
+			    position: relative;
+			    display: inline-block;
+			    background: #b7bbdb;
+			    border: solid 1px #848ab0;
+			    border-radius: 12%;
+			    font-size: 8em;
+			    margin: 1%;
+			    color: #333;
+			}
+			.inputField {
+				width: 100%;
+			    height: 10%;
+			    position: relative;
+			    display: inline-block;
+			    /* background: #6c78d3; */
+			    font-size: 3em;
+			    margin: 0 auto;
+			    border: none;
+			    padding: 0% 1%;
+			}
+			#resultado{
+				text-align: center;
+				font-family: 'Arial';
+				font-weight: 900;
+				font-size: 50px;
+			}
+			#main_calculadora label{
+			    display: block;
+			    position: relative;
+			    /* width: 49%; */
+			    font-size: 2em;
+			    /* margin-bottom: 39px; */
+			    text-align: left;
+			    padding: 0% 1%;
+			    color: #888;
+			}
+			#text_numbers{
+				display: block;
+				position: relative;
+			}
+			#num2{
+				color: #555;
+				border: solid 1px #eee;
+			}
+			#num1{
+				background: #eee;
+			}
+			#clear {
+			    background-color: #f00;
+			    color: #fff;
+			}
+			#igual {
+				background-color: #6c78d3;
+			}
+			.btn_numero {
+				background-color: #ccc;
+			}
+
+		</style>
+		<script type="text/javascript">
+			var numero1 = '0';
+			var numero2 = '0';
+			var texto_total = '';
+			let numero_actual = 0;
+			let resultado = 0;
+			let operacion = 5;
+			let operando = '?';
+
+			function setup() {
+			  // createCanvas(720, 400);
+			  // noStroke();
+			  // background(230);
+			}
+
+			function draw() {
+			  // keep draw() here to continue looping while waiting for keys
+			}
+
+
+			function operar(){
+				switch(operacion){
+			  		case 1:
+			  			resultado = numero1 + numero2;
+			  			console.log(resultado);
+			  			break;
+			  		case 2:
+			  			resultado = numero1 - numero2;
+			  			console.log(resultado);
+			  			break;
+			  		case 3:
+			  			resultado = numero1 / numero2;
+			  			console.log(resultado);
+			  			break;
+			  		case 4:
+			  			resultado = numero1 * numero2;
+			  			console.log(resultado);
+			  			break;
+					case 5:
+						alert("Ingresa el otro numero para operar");
+						break;
+			  		}
+			  		if (operacion != 5){
+			  			texto_total = numero1 +' '+ operando +' '+ numero2 + ' = ' + resultado;
+			  		clearCalc();
+			  		ponerNumero('num2',texto_total);	
+			  		} else {
+			  			texto_total = numero1 +' '+ operando;
+			  			ponerNumero('num2',texto_total);
+			  		}
+			  		
+			}
+
+			function clearCalc(){
+				console.log('limpiando');
+				ponerNumero('num1','');
+				ponerNumero('num2','');
+				operando = '?';
+				operacion = 5;
+				numero_actual = 0;
+				numero1 = '0';
+				numero2 = '0';
+			}
+
+			function cambiarColor(btn){
+				document.getElementById(btn).animate(
+				{ backgroundColor: '#c7cbe9' } , {
+				duration: 200
+				});
+
+			}
+
+			function ponerNumero(id, value){
+				document.getElementById(id).value = value;
+			}
+
+			function establecerNumero(numero){
+				switch(numero_actual){
+					case 0:
+						numero1 = Number(numero1 + numero);
+			  			ponerNumero('num1',numero1);
+						break;
+					case 1:
+						numero2 = Number(numero2 + numero);
+			  			ponerNumero('num1',numero2);
+						break;
+				}
+			}
+			function keyPressed() {
+			  let keyIndex = -1;
+			  if(key >= 0 && key <= 9){
+			  	cambiarColor("numero"+key);
+			  	establecerNumero(key);
+			  }
+			  switch(key){
+			  case '+':
+			  	operacion = 1;
+			  	cambiarColor("suma");
+			  	break;
+			  case '-':
+			  	operacion = 2;
+			  	cambiarColor("resta");
+			  	break;
+			  case '/':
+			  	operacion = 3;
+			  	cambiarColor("division");
+			  	break;
+			  case '*':
+			  	operacion = 4;
+			  	cambiarColor("multiplicacion");
+			  	break;
+			  case '=':
+			  	cambiarColor("igual");
+			  	operar();
+			  	break;
+			  case 'c':
+			  	cambiarColor("clear");
+			  	clearCalc();
+			  	break;
+			  }
+
+			  if (key == '+' || key == '-' || key == '/'|| key == '*'){
+			  	operando = key;
+			  	numero_actual = 1;
+			  	texto_total = numero1 +' '+ operando;
+				console.log(texto_total);
+				ponerNumero('num2',texto_total);
+				ponerNumero('num1','');
+			  }  
+			}
+			function buttonPress(element) {
+			  keyFake = element.innerText=='%'?'/':element.innerText;
+			  
+			  if(keyFake >= 0 && keyFake <= 9){
+			  	cambiarColor("numero"+keyFake);
+			  	establecerNumero(keyFake);
+			  }
+			  switch(keyFake){
+			  case '+':
+			  	operacion = 1;
+			  	cambiarColor("suma");
+			  	break;
+			  case '-':
+			  	operacion = 2;
+			  	cambiarColor("resta");
+			  	break;
+			  case '/':
+			  	operacion = 3;
+			  	cambiarColor("division");
+			  	break;
+			  case '*':
+			  	operacion = 4;
+			  	cambiarColor("multiplicacion");
+			  	break;
+			  case '=':
+			  	cambiarColor("igual");
+			  	operar();
+			  	break;
+			  case 'C':
+			  	cambiarColor("clear");
+			  	clearCalc();
+			  	break;
+			  }
+
+			  if (keyFake == '+' || keyFake == '-' || keyFake == '/'|| keyFake == '*'){
+			  	operando = keyFake;
+			  	numero_actual = 1;
+			  	texto_total = numero1 +' '+ operando;
+				console.log(texto_total);
+				ponerNumero('num2',texto_total);
+				ponerNumero('num1','');
+			  }  
+			}
+		</script>
+	</head>
+	<body>
+		<header></header>
+		<!--div id="principal" class="margen">
+			Ingrese su correo
+			<label for="usuario">Usuario: </label><input type="text" name="usuario" id="Usuario">
+			<label for="password">Clave: </label><input type="password" name="password" id="password">
+		</div-->
+		<div id="main_calculadora">
+			<h1>Calculadora</h1>
+			<label for="num2">Historico</label>
+			<input type="text" name="num2" id="num2" class="inputField">
+			</br>
+			<!--label for="num1">Primer numero: </label-->
+			<input type="number" name="num1" id="num1" class="inputField">
+			<div id="button_container">
+
+				<button id="clear" onclick="buttonPress(this)" class="button_calc">C</button>
+				<button id="igual" onclick="buttonPress(this)" class="button_calc">=</button>
+				<button id="numero0" onclick="buttonPress(this)" class="button_calc btn_numero">0</button>
+				<button id="division" onclick="buttonPress(this)" class="button_calc">%</button>
+				<button id="numero7" onclick="buttonPress(this)" class="button_calc btn_numero">7</button>
+				<button id="numero8" onclick="buttonPress(this)" class="button_calc btn_numero">8</button>
+				<button id="numero9" onclick="buttonPress(this)" class="button_calc btn_numero">9</button>
+				<button id="multiplicacion" onclick="buttonPress(this)" class="button_calc">*</button>
+				<button id="numero4" onclick="buttonPress(this)" class="button_calc btn_numero">4</button>
+				<button id="numero5" onclick="buttonPress(this)" class="button_calc btn_numero">5</button>
+				<button id="numero6" onclick="buttonPress(this)" class="button_calc btn_numero">6</button>
+				<button id="resta" onclick="buttonPress(this)" class="button_calc">-</button>
+				<button id="numero1" onclick="buttonPress(this)" class="button_calc btn_numero">1</button>
+				<button id="numero2" onclick="buttonPress(this)" class="button_calc btn_numero">2</button>
+				<button id="numero3" onclick="buttonPress(this)" class="button_calc btn_numero">3</button>
+				<button id="suma" onclick="buttonPress(this)" class="button_calc">+</button>
+			</div>
+		</div>
+	</body>
+</html>
